@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       "https://meena-gpt.vercel.app", // correct
-      "http://localhost:8000"         // allow local dev
+      "http://localhost:5173"         // allow local dev
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
