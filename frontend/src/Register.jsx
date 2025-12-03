@@ -32,11 +32,11 @@ function Register() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 flex items-center justify-center p-6">
       <div className="w-full max-w-4xl bg-slate-900/60 backdrop-blur-xl rounded-3xl shadow-xl border border-slate-800 p-10 grid md:grid-cols-2 gap-10 items-center">
-
+        
         <div className="flex justify-center items-center">
           <img
-            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80"
-            alt="Register Illustration"
+             src="signup.svg"
+             alt="Register Illustration"
             className="w-[90%] rounded-2xl drop-shadow-2xl object-cover"
           />
         </div>

@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
 
   const [loading, setLoading] = useState(false);
 
-  // ALERT SYSTEM
   const [alert, setAlert] = useState({
     open: false,
     type: "success",
@@ -41,9 +40,9 @@ export const AuthProvider = ({ children }) => {
     return () => clearTimeout(alertTimeoutRef.current);
   }, []);
 
-  // -------------------------
+  // ===========================
   // LOGIN
-  // -------------------------
+  // ===========================
   const login = async (email, password) => {
     try {
       setLoading(true);
@@ -55,10 +54,10 @@ export const AuthProvider = ({ children }) => {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || data.message || "Login failed");
+      if (!res.ok) throw new Error(data.error || "Login failed");
 
-      setUser(data.user);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      setUser({ ...data.user, token: data.token });
+      localStorage.setItem("user", JSON.stringify({ ...data.user, token: data.token }));
 
       showAlert("success", "Login successful");
       return { success: true };
@@ -70,9 +69,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // -------------------------
+  // ===========================
   // REGISTER
-  // -------------------------
+  // ===========================
   const register = async (name, email, password) => {
     try {
       setLoading(true);
@@ -84,10 +83,10 @@ export const AuthProvider = ({ children }) => {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || data.message || "Registration failed");
+      if (!res.ok) throw new Error(data.error || "Registration failed");
 
-      setUser(data.user);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      setUser({ ...data.user, token: data.token });
+      localStorage.setItem("user", JSON.stringify({ ...data.user, token: data.token }));
 
       showAlert("success", "Account created successfully");
       return { success: true };
@@ -99,9 +98,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // -------------------------
+  // ===========================
   // LOGOUT
-  // -------------------------
+  // ===========================
   const logout = () => {
     localStorage.removeItem("user");
     setUser(null);
@@ -119,14 +118,8 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: !!user,
       }}
     >
-      <Snackbar
-        open={alert.open}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        onClose={() => setAlert((prev) => ({ ...prev, open: false }))}
-      >
-        <Alert severity={alert.type} variant="filled">
-          {alert.message}
-        </Alert>
+      <Snackbar open={alert.open} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+        <Alert severity={alert.type} variant="filled">{alert.message}</Alert>
       </Snackbar>
 
       {children}
@@ -134,8 +127,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// -------------------------
-// CUSTOM HOOK
-// -------------------------
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);

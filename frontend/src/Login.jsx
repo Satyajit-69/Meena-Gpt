@@ -27,7 +27,7 @@ function Login() {
 
         <div className="flex justify-center items-center">
           <img
-            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80"
+            src="/login.svg"
             alt="Login Illustration"
             className="w-[90%] rounded-2xl shadow-2xl object-cover"
           />

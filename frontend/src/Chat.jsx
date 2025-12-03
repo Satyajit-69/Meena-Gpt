@@ -28,7 +28,7 @@ function Chat() {
     }, 40);
 
     return () => clearInterval(interval);
-  }, [reply]);
+  }, [prevChats.length, reply]);
 
   const handleCopy = (content, index) => {
     navigator.clipboard.writeText(content);

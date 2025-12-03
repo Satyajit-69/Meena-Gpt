@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { useAuth } from "../context/useAuth.js";
 import { v1 as uuidv1 } from "uuid";
@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
   const navigate = useNavigate();
-
   const { user, logout, isAuthenticated } = useAuth();
 
   const {
@@ -25,22 +24,30 @@ function Sidebar() {
 
   const BASE_URL = "http://localhost:8000/api";
 
-  // Fetch threads only when logged in
+  // =============================
+  // FETCH THREADS (Authenticated)
+  // =============================
   const getAllThreads = async () => {
     if (!isAuthenticated) return;
 
     try {
-      const response = await fetch(`${BASE_URL}/threads`);
-      const res = await response.json();
+      const response = await fetch(`${BASE_URL}/threads`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
-      setAllThreads(
-        res.map(t => ({
-          threadId: t.threadId,
-          title: t.title
-        }))
-      );
+      const res = await response.json();
+      if (Array.isArray(res)) {
+        setAllThreads(
+          res.map((t) => ({
+            threadId: t.threadId,
+            title: t.title,
+          }))
+        );
+      }
     } catch (err) {
-      console.log(err);
+      console.log("Fetch Threads Error:", err);
     }
   };
 
@@ -48,7 +55,9 @@ function Sidebar() {
     getAllThreads();
   }, [currThreadId, isAuthenticated]);
 
-  // Create a fresh chat
+  // =============================
+  // CREATE NEW CHAT
+  // =============================
   const createNewChat = () => {
     if (!isAuthenticated) return navigate("/login");
 
@@ -59,47 +68,68 @@ function Sidebar() {
     setPrevChats([]);
   };
 
-  // Change selected chat
+  // =============================
+  // LOAD THREAD
+  // =============================
   const changeThread = async (newThreadId) => {
     if (!isAuthenticated) return navigate("/login");
 
     setCurrThreadId(newThreadId);
+
     try {
-      const response = await fetch(`${BASE_URL}/threads/${newThreadId}`);
+      const response = await fetch(`${BASE_URL}/threads/${newThreadId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
       const res = await response.json();
       setPrevChats(res);
       setNewChat(false);
       setReply(null);
     } catch (err) {
-      console.log(err);
+      console.log("Load Thread Error:", err);
     }
   };
 
-  // Delete a chat
+  // =============================
+  // DELETE THREAD
+  // =============================
   const deleteThread = async (threadId) => {
     if (!window.confirm("Delete this conversation?")) return;
 
     try {
-      await fetch(`${BASE_URL}/threads/${threadId}`, { method: "DELETE" });
+      await fetch(`${BASE_URL}/threads/${threadId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
-      setAllThreads(prev => prev.filter(t => t.threadId !== threadId));
-
+      setAllThreads((prev) => prev.filter((t) => t.threadId !== threadId));
       if (threadId === currThreadId) createNewChat();
     } catch (err) {
-      console.log(err);
+      console.log("Delete Error:", err);
     }
   };
 
-  // Save edited chat title
+  // =============================
+  // SAVE EDIT TITLE
+  // =============================
   const saveEdit = (threadId) => {
-    setAllThreads(prev =>
-      prev.map(t =>
-        t.threadId === threadId ? { ...t, title: editTitle } : t
+    setAllThreads((prev) =>
+      prev.map((t) =>
+        t.threadId === threadId
+          ? { ...t, title: editTitle }
+          : t
       )
     );
     setEditingId(null);
   };
 
+  // =============================
+  // JSX UI
+  // =============================
   return (
     <section className="flex flex-col h-screen w-64 bg-gray-900 text-white">
 
@@ -128,15 +158,11 @@ function Sidebar() {
         <div className="text-xs text-gray-400 px-3 py-2">Recent Chats</div>
 
         {!isAuthenticated ? (
-          <div className="px-4 text-sm text-gray-400">
-            Please login to see your chats.
-          </div>
+          <div className="px-4 text-sm text-gray-400">Please login to see your chats.</div>
         ) : allThreads.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            No conversations yet
-          </div>
+          <div className="text-center py-8 text-gray-500">No conversations yet</div>
         ) : (
-          allThreads.map(thread => (
+          allThreads.map((thread) => (
             <div
               key={thread.threadId}
               className={`group flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer ${
@@ -166,7 +192,6 @@ function Sidebar() {
               ) : (
                 <>
                   <div className="flex-1 truncate">{thread.title}</div>
-
                   <div className="hidden group-hover:flex gap-1">
                     <button
                       onClick={(e) => {
@@ -220,13 +245,14 @@ function Sidebar() {
 
               <ChevronDown
                 size={16}
-                className={`transition-transform ${showProfileMenu ? "rotate-180" : ""}`}
+                className={`transition-transform ${
+                  showProfileMenu ? "rotate-180" : ""
+                }`}
               />
             </button>
 
             {showProfileMenu && (
               <div className="absolute bottom-full left-0 right-0 mb-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl py-1">
-
                 <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700">
                   <User size={16} /> My Profile
                 </button>
@@ -235,7 +261,7 @@ function Sidebar() {
                   <Settings size={16} /> Settings
                 </button>
 
-                <div className="border-t border-gray-700"></div>
+                <div className="border-t border-gray-700" />
 
                 <button
                   onClick={() => {
