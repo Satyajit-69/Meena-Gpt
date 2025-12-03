@@ -18,27 +18,24 @@ const MessageSchema = new mongoose.Schema({
 
 const ThreadSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,     // comes from JWT token
+      required: true,
+    },
+
     threadId: {
       type: String,
       required: true,
       unique: true,
     },
+
     title: {
       type: String,
       default: "New Chat",
     },
 
-    // ⭐ FIXED — MUST BE AN ARRAY!
+    // message array
     messages: [MessageSchema],
-
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   { timestamps: true }
 );

@@ -3,7 +3,7 @@ import { MyContext } from "./MyContext.jsx";
 import Chat from "./Chat.jsx";
 import { ScaleLoader } from "react-spinners";
 import botSVG from "./assets/chat-bot-animate.svg";
-
+import Navbar from "./Navbar.jsx";
 function ChatWindow() {
   const { prompt, setPrompt, setReply, setPrevChats, currThreadId, newChat, setNewChat } = useContext(MyContext);
   
@@ -77,27 +77,12 @@ function ChatWindow() {
     <div className="flex flex-col w-full h-full bg-gray-950 relative">
       
       {/* Top Navigation Bar */}
-      <nav className="bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between shadow-lg">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <i className="fa-solid fa-robot text-white text-sm" />
-          </div>
-          <h1 className="text-white text-lg font-bold">Meena GPT</h1>
-          <span className="px-2 py-1 bg-blue-600 text-white text-xs rounded-full font-semibold">mini</span>
-        </div>
-
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center cursor-pointer hover:bg-gray-700 transition-all hover:scale-105 border border-gray-700"
-        >
-          <i className="fa-solid fa-user text-white" />
-        </button>
-      </nav>
+       <Navbar />
 
       {/* Profile Dropdown Menu */}
       {isMenuOpen && (
         <div className="absolute top-20 right-6 w-64 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl z-50 overflow-hidden animate-slideDown">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-3">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-3 animate-shimmer bg-[length:200%_100%]">
             <p className="text-white font-semibold">Satyajit Sahoo</p>
             <p className="text-gray-200 text-xs">satyajitsahoo@gmail.com</p>
           </div>
@@ -120,25 +105,29 @@ function ChatWindow() {
               <img src={botSVG} className="w-64 h-64 relative z-10" alt="Bot" />
             </div>
 
-            <h2 className="text-4xl font-bold text-white mb-4 tracking-tight">
+            <h2 className="text-4xl font-bold mb-4 tracking-tight bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
               {welcomeText}
               <span className="border-r-2 border-blue-500 animate-pulse ml-1" />
             </h2>
 
-            <p className="text-gray-400 text-base max-w-md mb-8">
+            <p className="text-gray-400 text-base max-w-md mb-8 animate-fadeInDelay">
               Start a conversation below or explore our powerful AI features
             </p>
 
             {/* Quick Suggestions */}
-            <div className="grid grid-cols-2 gap-3 max-w-2xl">
+            <div className="grid grid-cols-2 gap-3 max-w-2xl animate-fadeInDelay2">
               {["Write a poem", "Explain quantum physics", "Create a business plan", "Debug my code"].map((suggestion, i) => (
                 <button
                   key={i}
                   onClick={() => setPrompt(suggestion)}
-                  className="px-4 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl text-gray-300 text-sm transition-all hover:scale-105 hover:border-blue-500"
+                  className="group px-4 py-3 bg-gradient-to-br from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 border border-gray-700 rounded-xl text-gray-300 text-sm transition-all hover:scale-105 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20 relative overflow-hidden"
+                  style={{ animationDelay: `${i * 100}ms` }}
                 >
-                  <i className="fa-solid fa-lightbulb text-yellow-500 mr-2" />
-                  {suggestion}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/10 to-blue-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                  <div className="relative flex items-center justify-center">
+                    <i className="fa-solid fa-lightbulb text-yellow-500 mr-2 group-hover:animate-bounce" />
+                    {suggestion}
+                  </div>
                 </button>
               ))}
             </div>
@@ -196,12 +185,34 @@ function ChatWindow() {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes fadeInDelay {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
         @keyframes slideDown {
           from { opacity: 0; transform: translateY(-10px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
         .animate-fadeIn { animation: fadeIn 0.5s ease-out; }
+        .animate-fadeInDelay { animation: fadeInDelay 0.6s ease-out 0.3s backwards; }
+        .animate-fadeInDelay2 { animation: fadeInDelay 0.6s ease-out 0.5s backwards; }
         .animate-slideDown { animation: slideDown 0.2s ease-out; }
+        .animate-gradient { 
+          background-size: 200% auto;
+          animation: gradient 3s linear infinite;
+        }
+        .animate-shimmer {
+          animation: shimmer 3s linear infinite;
+        }
       `}</style>
     </div>
   );

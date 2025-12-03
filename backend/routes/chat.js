@@ -2,11 +2,17 @@ import express from "express";
 const router = express.Router();
 import Thread from "../models/Thread.js";
 import getGeminiResponse from "../utils/gemini.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
-// GET ALL THREADS
+// 🔒 All chat routes below require JWT authentication
+router.use(authMiddleware);
+
+// ===============================
+// GET ALL THREADS (user-specific)
+// ===============================
 router.get("/threads", async (req, res) => {
   try {
-    const threads = await Thread.find({}).sort({ updatedAt: -1 });
+    const threads = await Thread.find({ userId: req.user.id }).sort({ updatedAt: -1 });
     return res.json(threads);
   } catch (error) {
     console.log(error);
@@ -14,12 +20,14 @@ router.get("/threads", async (req, res) => {
   }
 });
 
+// ===============================
 // GET SPECIFIC THREAD
+// ===============================
 router.get("/threads/:threadId", async (req, res) => {
   const { threadId } = req.params;
 
   try {
-    const thread = await Thread.findOne({ threadId });
+    const thread = await Thread.findOne({ threadId, userId: req.user.id });
 
     if (!thread) {
       return res.status(404).json({ error: "Thread not found" });
@@ -32,12 +40,17 @@ router.get("/threads/:threadId", async (req, res) => {
   }
 });
 
+// ===============================
 // DELETE THREAD
+// ===============================
 router.delete("/threads/:threadId", async (req, res) => {
   const { threadId } = req.params;
 
   try {
-    const deletedThread = await Thread.findOneAndDelete({ threadId });
+    const deletedThread = await Thread.findOneAndDelete({
+      threadId,
+      userId: req.user.id,
+    });
 
     if (!deletedThread) {
       return res.status(404).json({ error: "Thread not found" });
@@ -50,7 +63,9 @@ router.delete("/threads/:threadId", async (req, res) => {
   }
 });
 
+// ===============================
 // MAIN CHAT ROUTE
+// ===============================
 router.post("/chat", async (req, res) => {
   const { threadId, message } = req.body;
 
@@ -59,12 +74,13 @@ router.post("/chat", async (req, res) => {
   }
 
   try {
-    let thread = await Thread.findOne({ threadId });
+    let thread = await Thread.findOne({ threadId, userId: req.user.id });
 
     // If thread doesn't exist → create new
     if (!thread) {
       thread = new Thread({
         threadId,
+        userId: req.user.id, // link thread to logged-in user
         title: message,
         messages: [{ role: "user", content: message }],
       });
@@ -81,7 +97,6 @@ router.post("/chat", async (req, res) => {
     });
 
     thread.updatedAt = new Date();
-
     await thread.save();
 
     return res.json({ reply: assistantReply });

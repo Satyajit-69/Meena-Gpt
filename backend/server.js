@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import mongoose from "mongoose";
 import chatRoutes from "./routes/chat.js"
+import authRoutes from "./routes/auth.js" ;
 
 //configuration
 dotenv.config();
@@ -30,7 +31,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 //     res.status(500).send("Gemini AI failed");
 //   }
 // });
-
+app.use("/api/auth" , authRoutes) ;
 app.use("/api" ,chatRoutes) ;
 
 //connect with mongo
