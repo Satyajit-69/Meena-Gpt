@@ -13,7 +13,7 @@ const app = express();
 //middlewares
 app.use(
   cors({
-    origin: "*", // or later: your frontend render domain
+    origin: "https://meena-gpt.vercel.app/", // or later: your frontend render domain
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
