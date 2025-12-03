@@ -22,7 +22,7 @@ function Sidebar() {
   const [editTitle, setEditTitle] = useState("");
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-  const BASE_URL = "http://localhost:8000/api";
+const BASE_URL = "https://meena-gpt-1.onrender.com/api";
 
   // =============================
   // FETCH THREADS (Authenticated)

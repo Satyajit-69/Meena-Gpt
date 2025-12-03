@@ -11,7 +11,13 @@ dotenv.config();
 const app = express();
 
 //middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // or later: your frontend render domain
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
 // Gemini client

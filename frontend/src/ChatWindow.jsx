@@ -16,7 +16,7 @@ function ChatWindow() {
   const [welcomeText, setWelcomeText] = useState("");
   const typewriterRef = useRef(null);
 
-  const BASE_URL = "http://localhost:8000/api";
+const BASE_URL = "https://meena-gpt-1.onrender.com/api";
 
   // ---------------------------
   // TYPEWRITER WELCOME
