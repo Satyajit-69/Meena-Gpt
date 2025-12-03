@@ -13,11 +13,16 @@ const app = express();
 //middlewares
 app.use(
   cors({
-    origin: "https://meena-gpt.vercel.app/", // or later: your frontend render domain
+    origin: [
+      "https://meena-gpt.vercel.app", // correct
+      "http://localhost:8000"         // allow local dev
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
+
 app.use(express.json());
 
 // Gemini client
