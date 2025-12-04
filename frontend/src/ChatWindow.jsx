@@ -140,7 +140,7 @@ function ChatWindow() {
             </div>
           </div>
         ) : (
-          <div className="max-w-4xl mx-auto py-4">
+          <div className="max-w-4xl mx-auto ">
             <Chat />
           </div>
         )}

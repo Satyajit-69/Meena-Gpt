@@ -178,15 +178,15 @@ function Chat() {
 
   return (
     <div
-      className="w-full h-full overflow-y-auto p-4 space-y-6 scroll-smooth text-white"
+      className="w-full h-full overflow-y-auto p-4  scroll-smooth text-white"
       style={{ fontFamily: "inherit" }}
     >
       {newChat && (
-        <div className="flex flex-col items-center justify-center mt-20 animate-fadeIn">
+        <div className="flex flex-col items-center justify-center  animate-fadeIn">
           <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
             <i className="fa-solid fa-comments text-white text-2xl" />
           </div>
-          <h1 className="text-gray-400 text-xl">Start a conversation...</h1>
+          <h1 className="text-gray-400">Start a conversation...</h1>
         </div>
       )}
 
