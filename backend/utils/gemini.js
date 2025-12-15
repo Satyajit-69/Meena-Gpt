@@ -26,7 +26,7 @@ const getGeminiResponse = async (message) => {
     );
   } catch (err) {
     console.error("Gemini REST Error:", err);
-    return "Gemini AI failed to generate a response.";
+    return "Sorry I am unable to generate response at this time ..... ";
   }
 };
 
