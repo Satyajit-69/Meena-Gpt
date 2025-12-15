@@ -18,12 +18,18 @@ function App() {
   const [allThreads, setAllThreads] = useState([]);
 
   const providerValues = {
-    prompt, setPrompt,
-    reply, setReply,
-    currThreadId, setCurrThreadId,
-    newChat, setNewChat,
-    prevChats, setPrevChats,
-    allThreads, setAllThreads
+    prompt,
+    setPrompt,
+    reply,
+    setReply,
+    currThreadId,
+    setCurrThreadId,
+    newChat,
+    setNewChat,
+    prevChats,
+    setPrevChats,
+    allThreads,
+    setAllThreads,
   };
 
   return (
@@ -34,21 +40,24 @@ function App() {
         <Route
           path="/"
           element={
-            <div className="w-screen h-screen flex bg-gray-950 overflow-hidden">
-              <div className="w-[280px] h-full bg-gray-900 border-r border-gray-800">
-                <Sidebar />
-              </div>
-              <div className="flex-1 h-full overflow-hidden">
+            <div className="relative w-screen h-screen bg-gray-950 overflow-hidden">
+              
+              {/* Sidebar */}
+              <Sidebar />
+
+              {/* Chat Window */}
+              <div className="h-full w-full lg:pl-64">
                 <ChatWindow />
               </div>
+
             </div>
           }
         />
 
-        {/* LOGIN PAGE */}
+        {/* LOGIN */}
         <Route path="/login" element={<Login />} />
 
-        {/* REGISTER PAGE */}
+        {/* REGISTER */}
         <Route path="/register" element={<Register />} />
 
       </Routes>
