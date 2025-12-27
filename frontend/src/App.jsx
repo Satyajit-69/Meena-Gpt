@@ -35,21 +35,18 @@ function App() {
   return (
     <MyContext.Provider value={providerValues}>
       <Routes>
-
         {/* MAIN CHAT PAGE */}
         <Route
           path="/"
           element={
-            <div className="relative w-screen h-screen bg-gray-950 overflow-hidden">
-              
-              {/* Sidebar */}
+            <div className="flex w-screen h-screen bg-gray-950 overflow-hidden">
+              {/* Sidebar (fixed width) */}
               <Sidebar />
 
-              {/* Chat Window */}
-              <div className="h-full w-full lg:pl-64">
+              {/* Chat Area */}
+              <main className="flex-1 h-full overflow-hidden">
                 <ChatWindow />
-              </div>
-
+              </main>
             </div>
           }
         />
@@ -59,7 +56,6 @@ function App() {
 
         {/* REGISTER */}
         <Route path="/register" element={<Register />} />
-
       </Routes>
     </MyContext.Provider>
   );
