@@ -1,21 +1,23 @@
-import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import mongoose from "mongoose";
-import chatRoutes from "./routes/chat.js"
-import authRoutes from "./routes/auth.js" ;
-
-//configuration
 dotenv.config();
+
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+
+import chatRoutes from "./routes/chat.js";
+import authRoutes from "./routes/auth.js";
+
+// config
+
 const app = express();
 
-//middlewares
+// middlewares
 app.use(
   cors({
     origin: [
-      "https://meena-gpt.vercel.app", // correct
-      "http://localhost:5173"         // allow local dev
+      "https://meena-gpt.vercel.app",
+      "http://localhost:5173",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -25,39 +27,23 @@ app.use(
 
 app.use(express.json());
 
-// Gemini client
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+// routes
+app.use("/api/auth", authRoutes);
+app.use("/api", chatRoutes);
 
-// //post route
-// app.post("/chat", async (req, res) => {
-//   try {
-//     const { message } = req.body;
-//     const result = await model.generateContent(message);
-//     const reply = result.response.text();
-//     res.send(reply);
+// database
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("MongoDB connected 🍃✅");
+  } catch (err) {
+    console.error("Mongo Error:", err);
+    process.exit(1);
+  }
+};
 
-//   } catch (err) {
-//     console.error("Gemini Error:", err);
-//     res.status(500).send("Gemini AI failed");
-//   }
-// });
-app.use("/api/auth" , authRoutes) ;
-app.use("/api" ,chatRoutes) ;
-
-//connect with mongo
-const connectDB = async() => {
-    try {
-        await mongoose.connect(process.env.MONGO_URL) ;
-        console.log("MongoDB connected 🍃✅") ;
-    }
-    catch(err) {
-        console.log("Error" , err) ;
-    }
-}
-
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server running 🏃💨 at ${process.env.PORT}`);
-  connectDB() ;
+// start server
+app.listen(process.env.PORT || 8000, () => {
+  console.log(`Server running 🏃💨 on port ${process.env.PORT || 8000}`);
+  connectDB();
 });

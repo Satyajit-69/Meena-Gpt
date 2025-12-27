@@ -1,5 +1,8 @@
 import Groq from "groq-sdk";
-import "dotenv/config";
+
+if (!process.env.GROQ_API_KEY) {
+  throw new Error("GROQ_API_KEY is missing in environment variables");
+}
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -12,7 +15,7 @@ const getAIResponse = async (message) => {
       messages: [{ role: "user", content: message }],
     });
 
-    return completion.choices[0]?.message?.content;
+    return completion.choices[0]?.message?.content || "No response";
   } catch (err) {
     console.error("Groq Error:", err);
     return "AI failed to generate a response.";
