@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import Thread from "../models/Thread.js";
-import getGeminiResponse from "../utils/gemini.js";
+import getAIResponse from "../utils/groq.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 // 🔒 All chat routes below require JWT authentication
@@ -87,9 +87,10 @@ router.post("/chat", async (req, res) => {
     } else {
       thread.messages.push({ role: "user", content: message });
     }
+    
+    //Ai response
+    const assistantReply = await getAIResponse(message);
 
-    // Gemini AI reply
-    const assistantReply = await getGeminiResponse(message);
 
     thread.messages.push({
       role: "assistant",
