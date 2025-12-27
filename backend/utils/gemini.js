@@ -1,21 +1,20 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/genai";
 import "dotenv/config";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-const model = genAI.getGenerativeModel({ model: "	gemini-3-pro-preview" });
+const client = new GoogleGenerativeAI({
+  apiKey: process.env.GOOGLE_API_KEY,
+});
 
-const getGeminiResponse = async (message, useChainOfThought = true) => {
+const getGeminiResponse = async (message) => {
   try {
-    // Add Chain of Thought prompt prefix
-    const enhancedMessage = useChainOfThought
-      ? `Let's think step by step.\n\n${message}`
-      : message;
+    const response = await client.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: message,
+    });
 
-    const result = await model.generateContent(enhancedMessage);
-    const reply = result.response.text();
-    return reply;
+    return response.text;
   } catch (err) {
-    console.log("Gemini Util Error:", err);
+    console.error("Gemini Error:", err);
     return "Gemini AI failed to generate a response.";
   }
 };
