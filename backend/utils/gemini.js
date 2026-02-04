@@ -19,7 +19,7 @@ const getAIResponse = async (message) => {
       model: "gemini-2.5-flash", 
       contents: message,
     });
-
+     //return the response as text format
     return result.text || "No response generated.";
   } catch (err) {
     console.error("Gemini Error:", err);
