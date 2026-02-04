@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import Thread from "../models/Thread.js";
-import getAIResponse from "../utils/groq.js";
+import getAIResponse from "../utils/gemini.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 // 🔒 All chat routes below require JWT authentication
