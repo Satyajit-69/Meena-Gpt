@@ -8,7 +8,6 @@ import chatRoutes from "./routes/chat.js";
 import authRoutes from "./routes/auth.js";
 
 // config
-
 const app = express();
 
 // middlewares

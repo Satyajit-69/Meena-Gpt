@@ -1,4 +1,5 @@
 
 import { createContext } from "react";
 
-export const MyContext = createContext("");
+// Provide a safe default object to avoid destructuring errors
+export const MyContext = createContext({});
