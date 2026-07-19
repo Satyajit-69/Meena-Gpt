@@ -3,6 +3,16 @@ import { MyContext } from "./MyContext";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
+import {
+  Bot,
+  User,
+  Copy,
+  Check,
+  TriangleAlert,
+  ThumbsUp,
+  ThumbsDown,
+  RotateCcw,
+} from "lucide-react";
 
 /* ─── helpers ─────────────────────────────────────────────────── */
 const isSystemError = (content) =>
@@ -34,7 +44,11 @@ function CodeBlock({ children, ...props }) {
                    opacity-0 group-hover:opacity-100
                    transition-all duration-200 border border-gray-600/50 backdrop-blur-sm"
       >
-        <i className={`fa-solid ${copied ? "fa-check text-emerald-400" : "fa-copy"}`} />
+        {copied ? (
+          <Check className="w-3.5 h-3.5 text-emerald-400" />
+        ) : (
+          <Copy className="w-3.5 h-3.5" />
+        )}
         {copied ? "Copied!" : "Copy"}
       </button>
       <pre
@@ -200,7 +214,7 @@ function Chat() {
       return (
         <div key={i} className="flex justify-center w-full my-3">
           <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm bg-red-500/10 text-red-400 border border-red-500/25 backdrop-blur-sm">
-            <i className="fa-solid fa-triangle-exclamation" />
+            <TriangleAlert className="w-4 h-4" />
             {chat.content}
           </div>
         </div>
@@ -223,7 +237,11 @@ function Chat() {
                 : "bg-gradient-to-br from-violet-600 via-purple-600 to-pink-600"
               }`}
           >
-            <i className={`fa-solid ${isUser ? "fa-user" : "fa-robot"} text-white`} style={{ fontSize: "0.7rem" }} />
+            {isUser ? (
+              <User className="w-3.5 h-3.5 text-white" />
+            ) : (
+              <Bot className="w-3.5 h-3.5 text-white" />
+            )}
           </div>
 
           {/* bubble + meta */}
@@ -266,17 +284,17 @@ function Chat() {
                 className="flex items-center gap-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
               >
                 <ActionBtn
-                  icon={copiedIndex === i ? "fa-check" : "fa-copy"}
+                  icon={copiedIndex === i ? Check : Copy}
                   label={copiedIndex === i ? "Copied" : "Copy"}
                   onClick={() => handleCopy(chat.content, i)}
                   active={copiedIndex === i}
                   activeColor="text-emerald-400"
                 />
-                <ActionBtn icon="fa-thumbs-up" label="Good" hoverColor="hover:text-blue-400" />
-                <ActionBtn icon="fa-thumbs-down" label="Bad" hoverColor="hover:text-red-400" />
+                <ActionBtn icon={ThumbsUp} label="Good" hoverColor="hover:text-blue-400" />
+                <ActionBtn icon={ThumbsDown} label="Bad" hoverColor="hover:text-red-400" />
                 {isLatest && typeof onRegenerate === "function" && (
                   <ActionBtn
-                    icon="fa-rotate-right"
+                    icon={RotateCcw}
                     label="Regenerate"
                     onClick={onRegenerate}
                     hoverColor="hover:text-violet-400"
@@ -295,7 +313,7 @@ function Chat() {
     <div className="flex flex-col items-center justify-center h-full gap-6 animate-fadeIn select-none">
       <div className="relative">
         <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-violet-600 via-purple-600 to-pink-600 flex items-center justify-center shadow-2xl shadow-purple-900/40">
-          <i className="fa-solid fa-robot text-white text-3xl" />
+          <Bot className="text-white w-9 h-9" />
         </div>
         <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-gray-900 flex items-center justify-center">
           <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
@@ -353,7 +371,14 @@ function Chat() {
 }
 
 /* ─── tiny reusable action button ─────────────────────────────── */
-function ActionBtn({ icon, label, onClick, active, activeColor = "", hoverColor = "hover:text-blue-400" }) {
+function ActionBtn({
+  icon: Icon,
+  label,
+  onClick,
+  active,
+  activeColor = "",
+  hoverColor = "hover:text-blue-400",
+}) {
   return (
     <button
       onClick={onClick}
@@ -362,10 +387,9 @@ function ActionBtn({ icon, label, onClick, active, activeColor = "", hoverColor 
         hover:bg-gray-700/60 hover:border-gray-600/40
         ${active ? activeColor : `text-gray-500 ${hoverColor}`}`}
     >
-      <i className={`fa-solid ${icon}`} />
+      <Icon className="w-3.5 h-3.5" />
       {label}
     </button>
   );
 }
-
 export default Chat;

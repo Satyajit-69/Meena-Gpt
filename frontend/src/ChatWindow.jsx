@@ -5,13 +5,23 @@ import Chat from "./Chat.jsx";
 import { ScaleLoader } from "react-spinners";
 import Navbar from "./Navbar.jsx";
 import botSVG from "./assets/chat-bot-animate.svg";
+import {
+  Lightbulb,
+  Code,
+  FileText,
+  Search,
+  Play,
+  Pause,
+  Ellipsis,
+  Send,
+} from "lucide-react";
 
 /* ── suggestion chips shown on welcome screen ── */
 const SUGGESTIONS = [
-  { icon: "fa-lightbulb", label: "Brainstorm ideas" },
-  { icon: "fa-code", label: "Write some code" },
-  { icon: "fa-file-lines", label: "Summarize text" },
-  { icon: "fa-magnifying-glass", label: "Research a topic" },
+  { icon: Lightbulb, label: "Brainstorm ideas" },
+  { icon: Code, label: "Write some code" },
+  { icon: FileText, label: "Summarize text" },
+  { icon: Search, label: "Research a topic" },
 ];
 
 function ChatWindow() {
@@ -263,7 +273,7 @@ function ChatWindow() {
 
               {/* suggestion chips */}
               <div className="flex flex-wrap justify-center gap-2.5 max-w-lg fade-up-2">
-                {SUGGESTIONS.map(({ icon, label }) => (
+                {SUGGESTIONS.map(({ icon: Icon, label }) => (
                   <button
                     key={label}
                     onClick={() => handleSuggestion(label)}
@@ -284,7 +294,7 @@ function ChatWindow() {
                       e.currentTarget.style.color = "var(--text-2)";
                     }}
                   >
-                    <i className={`fa-solid ${icon} text-xs`} style={{ color: "var(--accent)" }} />
+                    <Icon className="w-3.5 h-3.5" style={{ color: "var(--accent)" }} />
                     {label}
                   </button>
                 ))}
@@ -323,7 +333,11 @@ function ChatWindow() {
                   border: "1px solid var(--border-hi)",
                 }}
               >
-                <i className={`fa-solid ${paused ? "fa-play" : "fa-pause"} text-[10px]`} />
+                {paused ? (
+                  <Play className="w-2.5 h-2.5" />
+                ) : (
+                  <Pause className="w-2.5 h-2.5" />
+                )}
                 {paused ? "Resume" : "Pause"}
               </button>
             </div>
@@ -388,7 +402,11 @@ function ChatWindow() {
                     cursor: canSend ? "pointer" : "not-allowed",
                   }}
                 >
-                  <i className={`fa-solid ${loading ? "fa-ellipsis" : "fa-paper-plane"} text-xs`} />
+                  {loading ? (
+                    <Ellipsis className="w-3.5 h-3.5" />
+                  ) : (
+                    <Send className="w-3.5 h-3.5" />
+                  )}
                 </button>
               </div>
             </div>
