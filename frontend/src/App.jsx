@@ -1,4 +1,5 @@
 import "./App.css";
+import Home from "./Home.jsx";
 import Sidebar from "./sidebar.jsx";
 import ChatWindow from "./ChatWindow.jsx";
 import { MyContext } from "./MyContext.jsx";
@@ -8,6 +9,9 @@ import { v1 as uuidv1 } from "uuid";
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login.jsx";
 import Register from "./Register.jsx";
+import Navbar from "./Navbar.jsx";
+import LandingPage from "./Landingpage.jsx";
+import Footer from "./Footer.jsx";
 
 function App() {
   const [prompt, setPrompt] = useState("");
@@ -34,10 +38,13 @@ function App() {
 
   return (
     <MyContext.Provider value={providerValues}>
+      <Navbar />
       <Routes>
+        
+        <Route  path="/" element={<LandingPage/>}/>
         {/* MAIN CHAT PAGE */}
         <Route
-          path="/"
+          path="/main-chat"
           element={
             <div className="flex w-screen h-screen bg-gray-950 overflow-hidden">
               {/* Sidebar (fixed width) */}
@@ -50,13 +57,14 @@ function App() {
             </div>
           }
         />
-
+        
         {/* LOGIN */}
         <Route path="/login" element={<Login />} />
 
         {/* REGISTER */}
         <Route path="/register" element={<Register />} />
       </Routes>
+      <Footer />
     </MyContext.Provider>
   );
 }

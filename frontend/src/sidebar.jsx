@@ -160,21 +160,7 @@ function Sidebar() {
 
         {/* ── header ── */}
         <div className="px-4 pt-5 pb-4" style={{ borderBottom: "1px solid var(--sb-border)" }}>
-          <div className="flex items-center gap-3 mb-5">
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden"
-              style={{ background: "linear-gradient(135deg, var(--accent), var(--accent2))", boxShadow: "0 4px 16px rgba(79,124,255,0.3)" }}
-            >
-              <img src={logo} alt="logo" className="w-7 h-7 object-contain" />
-            </div>
-            <div>
-              <div className="text-sm font-semibold" style={{ fontFamily: "Syne, sans-serif", color: "var(--text-1)" }}>
-                Meena GPT
-              </div>
-              <div className="text-[10px]" style={{ color: "var(--text-2)" }}>Your Smart Assistant</div>
-            </div>
-          </div>
-
+          
           <button
             onClick={createNewChat}
             className="sb-new-btn w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white"
@@ -275,102 +261,8 @@ function Sidebar() {
           )}
         </div>
 
-        {/* ── profile section ── */}
-        <div style={{ borderTop: "1px solid var(--sb-border)" }} className="p-3">
-          {!isAuthenticated ? (
-            <button
-              onClick={() => navigate("/login")}
-              className="w-full py-2.5 text-center rounded-xl text-sm font-medium transition-all hover:opacity-80"
-              style={{
-                background: "var(--sb-surface)",
-                border: "1px solid var(--sb-border-hi)",
-                color: "var(--text-1)",
-              }}
-            >
-              Login / Register
-            </button>
-          ) : (
-            <div className="relative">
-              <button
-                onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all"
-                style={{ background: showProfileMenu ? "var(--sb-raised)" : "transparent" }}
-                onMouseEnter={e => e.currentTarget.style.background = "var(--sb-surface)"}
-                onMouseLeave={e => e.currentTarget.style.background = showProfileMenu ? "var(--sb-raised)" : "transparent"}
-              >
-                {/* avatar */}
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold text-white"
-                  style={{ background: "linear-gradient(135deg, var(--accent), var(--accent2))" }}
-                >
-                  {user?.name?.charAt(0)?.toUpperCase() ?? "U"}
-                </div>
-
-                <div className="flex-1 text-left overflow-hidden">
-                  <div className="text-xs font-medium truncate" style={{ color: "var(--text-1)" }}>
-                    {user?.name}
-                  </div>
-                  <div className="text-[10px] truncate" style={{ color: "var(--text-2)" }}>
-                    {user?.email}
-                  </div>
-                </div>
-
-                <ChevronDown
-                  size={14}
-                  style={{
-                    color: "var(--text-3)",
-                    transform: showProfileMenu ? "rotate(180deg)" : "rotate(0deg)",
-                    transition: "transform 0.2s",
-                    flexShrink: 0,
-                  }}
-                />
-              </button>
-
-              {showProfileMenu && (
-                <div
-                  className="profile-menu absolute bottom-full left-0 right-0 mb-2 rounded-xl py-1.5 shadow-2xl"
-                  style={{
-                    background: "var(--sb-raised)",
-                    border: "1px solid var(--sb-border-hi)",
-                  }}
-                >
-                  {[
-                    { icon: User, label: "My Profile" },
-                    { icon: Settings, label: "Settings" },
-                  ].map(({ icon: Icon, label }) => (
-                    <button
-                      key={label}
-                      className="w-full flex items-center gap-2.5 px-4 py-2 text-xs transition-all"
-                      style={{ color: "var(--text-2)" }}
-                      onMouseEnter={e => { e.currentTarget.style.background = "var(--sb-surface)"; e.currentTarget.style.color = "var(--text-1)"; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-2)"; }}
-                    >
-                      <Icon size={14} />
-                      {label}
-                    </button>
-                  ))}
-
-                  <div style={{ borderTop: "1px solid var(--sb-border)", margin: "4px 0" }} />
-
-                  <button
-                    onClick={() => { logout(); navigate("/login"); }}
-                    className="w-full flex items-center gap-2.5 px-4 py-2 text-xs transition-all"
-                    style={{ color: "var(--danger)" }}
-                    onMouseEnter={e => e.currentTarget.style.background = "rgba(248,113,113,0.08)"}
-                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-                  >
-                    <LogOut size={14} />
-                    Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-
-          <p className="text-center text-[10px] mt-3" style={{ color: "var(--text-3)" }}>
-            Made with ❤️ by Satyajit
-          </p>
-        </div>
+      
+      
       </section>
     </>
   );

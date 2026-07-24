@@ -217,8 +217,7 @@ function ChatWindow() {
 
       <div className="cw-root flex flex-col h-screen overflow-hidden">
 
-        {/* ── navbar ── */}
-        <Navbar />
+    
 
         {/* ── main scroll area ── */}
         <div className="cw-scroll flex-1 overflow-y-auto relative">

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/useAuth.js";
-import { Bot, LogOut, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
+import { Bot, LogOut } from "lucide-react";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
 
@@ -13,36 +14,45 @@ function Navbar() {
     navigate(path);
   };
 
-  return (
-    <nav className="relative bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between shadow-lg">
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+    navigate("/login");
+  };
 
-      {/* Left Logo */}
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-          <Bot className="w-5 h-5 text-white" />
+  return (
+    <nav className="relative flex items-center justify-between px-6 py-4 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-700 shadow-lg">
+      {/* Logo */}
+      <Link
+        to="/landing-page"
+        className="flex items-center gap-3 group"
+      >
+        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600">
+          <Bot className="w-6 h-6 text-white" />
         </div>
 
-        <h1 className="text-white text-lg font-bold">
+        <h1 className="text-xl font-bold text-white transition group-hover:text-blue-400">
           Meena <span className="text-blue-400">GPT</span>
         </h1>
+      </Link>
 
-        <span className="px-2 py-1 bg-blue-600 text-white text-xs rounded-full font-semibold">
-          mini
-        </span>
-      </div>
-
-      {/* User Section */}
+      {/* Profile Button */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 border border-gray-700 transition"
+        className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 transition"
       >
-        <User className="w-5 h-5 text-white" />
+        {isAuthenticated ? (
+          <span className="text-white font-semibold">
+            {user?.name?.charAt(0).toUpperCase()}
+          </span>
+        ) : (
+          <span className="text-white font-semibold">?</span>
+        )}
       </button>
 
       {/* Dropdown */}
       {isMenuOpen && (
-        <div className="absolute right-6 top-16 w-52 bg-gray-800 border border-gray-700 rounded-lg shadow-xl overflow-hidden z-50">
-
+        <div className="absolute right-6 top-16 w-56 overflow-hidden rounded-xl border border-gray-700 bg-gray-800 shadow-2xl z-50">
           {!isAuthenticated ? (
             <>
               <button
@@ -61,21 +71,19 @@ function Navbar() {
             </>
           ) : (
             <>
-              <div className="px-4 py-3 border-b border-gray-700">
-                <p className="text-white font-semibold truncate">
+              <div className="border-b border-gray-700 px-4 py-3">
+                <p className="font-semibold text-white truncate">
                   {user?.name}
                 </p>
-                <p className="text-gray-400 text-sm truncate">
+
+                <p className="text-sm text-gray-400 truncate">
                   {user?.email}
                 </p>
               </div>
 
               <button
-                onClick={() => {
-                  logout();
-                  handleNavigation("/login");
-                }}
-                className="w-full px-4 py-3 text-left flex items-center gap-2 text-red-400 hover:bg-gray-700 transition"
+                onClick={handleLogout}
+                className="flex w-full items-center gap-2 px-4 py-3 text-left text-red-400 hover:bg-gray-700 transition"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
