@@ -30,7 +30,7 @@ function Footer() {
 
     const socialLinks = [
         { icon: Github, href: 'https://github.com/Satyajit-69/Meena-Gpt', label: 'GitHub' },
-        { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+        { icon: Linkedin, href: 'https://www.linkedin.com/in/satyajit-sahoo-b16795315/', label: 'LinkedIn' },
     ];
 
     return (
