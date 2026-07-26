@@ -164,6 +164,23 @@ export default function Home() {
       id="home"
       className="relative flex min-h-screen w-full items-center overflow-hidden bg-[#0A0812] px-6 md:px-16"
     >
+
+        
+           {/* Grid background, fading from top-left */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(to left, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          maskImage:
+            "radial-gradient(circle at top right, black 0%, transparent 60%)",
+          WebkitMaskImage:
+            "radial-gradient(circle at top right, black 0%, transparent 60%)",
+        }}
+      />
+
+
       {/* ambient background glow */}
       <div className="pointer-events-none absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full bg-[#6C5CE7] opacity-20 blur-[140px]" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-72 w-72 rounded-full bg-[#00D4FF] opacity-10 blur-[120px]" />
@@ -172,7 +189,7 @@ export default function Home() {
         {/* Copy */}
         <div className="order-2 md:order-1">
           <span className="mb-5 inline-block rounded-full border border-white/10 px-4 py-1 font-mono text-xs tracking-wide text-[#00D4FF]">
-            NOW LISTENING
+           Welcome to MEENAGPT 
           </span>
           <h1 className="font-display text-5xl font-medium leading-[1.05] tracking-tight text-white md:text-6xl">
             An AI that

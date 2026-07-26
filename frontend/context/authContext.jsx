@@ -118,7 +118,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: !!user,
       }}
     >
-      <Snackbar open={alert.open} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+      <Snackbar>
         <Alert severity={alert.type} variant="filled">{alert.message}</Alert>
       </Snackbar>
 
