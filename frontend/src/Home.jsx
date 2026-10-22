@@ -174,9 +174,9 @@ export default function Home() {
             "linear-gradient(to left, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
           maskImage:
-            "radial-gradient(circle at top right, black 0%, transparent 60%)",
+            "radial-gradient(circle at bottom, white 0%, transparent 40%)",
           WebkitMaskImage:
-            "radial-gradient(circle at top right, black 0%, transparent 60%)",
+            "radial-gradient(circle at bottom, white 0%, transparent 40%)",
         }}
       />
 

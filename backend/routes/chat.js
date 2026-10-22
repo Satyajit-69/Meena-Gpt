@@ -1,15 +1,13 @@
 import express from "express";
 const router = express.Router();
 import Thread from "../models/Thread.js";
-import getAIResponse from "../utils/gemini.js";
+import getAIResponse from "../utils/openai.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 
 router.use(authMiddleware);
 
-// ===============================
-// GET ALL THREADS (user-specific)
-// ===============================
+
 router.get("/threads", async (req, res) => {
   try {
     const threads = await Thread.find({ userId: req.user.id }).sort({ updatedAt: -1 });
@@ -20,9 +18,7 @@ router.get("/threads", async (req, res) => {
   }
 });
 
-// ===============================
-// GET SPECIFIC THREAD
-// ===============================
+
 router.get("/threads/:threadId", async (req, res) => {
   const { threadId } = req.params;
 
@@ -40,9 +36,7 @@ router.get("/threads/:threadId", async (req, res) => {
   }
 });
 
-// ===============================
-// DELETE THREAD
-// ===============================
+
 router.delete("/threads/:threadId", async (req, res) => {
   const { threadId } = req.params;
 
@@ -63,9 +57,6 @@ router.delete("/threads/:threadId", async (req, res) => {
   }
 });
 
-// ===============================
-// MAIN CHAT ROUTE
-// ===============================
 router.post("/chat", async (req, res) => {
   const { threadId, message } = req.body;
 
